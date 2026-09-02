@@ -39,26 +39,10 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") {
 
-    const resposta = await fetch(
-      `${SUPABASE_URL}/rest/v1/leituras?select=*&order=created_at.desc&limit=1`,
-      {
-        headers: {
-          "apikey": SUPABASE_SECRET_KEY,
-          "Authorization": `Bearer ${SUPABASE_SECRET_KEY}`
-        }
-      }
-    );
+    return res.status(200).json({
+      urlTeste: `${SUPABASE_URL}/rest/v1/leituras`
+    });
 
-    const dados = await resposta.json();
-
-    if (!resposta.ok) {
-      return res.status(500).json({
-        sucesso: false,
-        erro: dados
-      });
-    }
-
-    return res.status(200).json(dados[0] || {});
   }
 
   return res.status(405).json({
