@@ -242,6 +242,38 @@
                 entrar();
             }
         });
+  async function atualizarDados() {
+    try {
+        const resposta = await fetch("/api/dados");
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao buscar dados");
+        }
+
+        const dados = await resposta.json();
+
+        document.getElementById("turbidez").textContent =
+            dados.turbidez ?? "--";
+
+        document.getElementById("condutividade").textContent =
+            dados.condutividade ?? "--";
+
+        if (dados.created_at) {
+            const data = new Date(dados.created_at);
+
+            document.getElementById("ultimaAtualizacao").textContent =
+                data.toLocaleString("pt-BR");
+        }
+
+        document.getElementById("status").textContent = "Online";
+
+    } catch (erro) {
+        document.getElementById("status").textContent = "Sem conexão";
+    }
+}
+
+setInterval(atualizarDados, 5000);
+atualizarDados();
     </script>
 
 </body>
